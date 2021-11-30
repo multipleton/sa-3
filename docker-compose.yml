@@ -3,12 +3,12 @@ version: "3.8"
 services:
   postgres:
     image: postgres
-        ports:
-          - 5432:5432
-        volumes:
-          - ./db/1-schema.sql:/docker-entrypoint-initdb.d/
-          - ./db/2-data.sql:/docker-entrypoint-initdb.d/
-        environment:
-            POSTGRES_USER: sa-3-user
-            POSTGRES_PASSWORD: sa-3-password
-            POSTGRES_DB: sa-3
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_USER: sa-3-user
+      POSTGRES_PASSWORD: sa-3-password
+      POSTGRES_DB: sa-3
+    tty: true
