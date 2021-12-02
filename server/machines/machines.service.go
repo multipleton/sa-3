@@ -13,7 +13,7 @@ func (ms *MachinesService) ReadAll() ([]Machine, error) {
 }
 
 func (ms *MachinesService) FindById(id string) (Machine, error) {
-	machine, err := ms.Mr.GetById(id)
+	machine, err := ms.Mr.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func (ms *MachinesService) FindById(id string) (Machine, error) {
 }
 
 func (ms *MachinesService) Update(id string, machine Machine) (Machine, error) {
-	machine, err := ms.Mr.GetById(id)
+	machine, err := ms.Mr.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
