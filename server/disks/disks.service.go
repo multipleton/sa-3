@@ -9,13 +9,13 @@ func (ds *DisksService) FindById(id uint32) (DisksEntity, error) {
 	return result, err
 }
 
-func (ds *DisksService) ConnectToMachine(id uint32, machineId uint32) (DisksEntity, error) {
+func (ds *DisksService) ConnectToMachine(id uint32, dto DiskConnectToMachineDto) (DisksEntity, error) {
 	var result DisksEntity
 	dbDisk, err := ds.FindById(id)
 	if err != nil {
 		return result, nil
 	}
-	dbDisk.MachineId = machineId
+	dbDisk.MachineId = dto.MachineId
 	result, err = ds.disksRepository.Update(dbDisk)
 	return result, err
 }
