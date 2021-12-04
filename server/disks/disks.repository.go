@@ -19,9 +19,8 @@ func (dr *DisksRepository) Update(entity DisksEntity) (DisksEntity, error) {
 	var result DisksEntity
 	query := "UPDATE disks SET machine_id=? capacity=? WHERE id=?"
 	_, err := dr.DB.Exec(query, entity.MachineId, entity.Capacity, entity.Id)
-	if err != nil {
-		return result, err
+	if err == nil {
+		result, err = dr.FindById(entity.Id)
 	}
-	result, err = dr.FindById(entity.Id)
 	return result, err
 }
