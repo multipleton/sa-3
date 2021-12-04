@@ -14,9 +14,7 @@ func (mr *MachinesRepository) GetAll() ([]Machine, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
-
 	var res []*Machine
 	for rows.Next() {
 		var m Machine
@@ -37,9 +35,7 @@ func (mr *MachinesRepository) GetOne(id string) (Machine, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer row.Close()
-
 	var m Machine
 	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
 		return nil, err
@@ -49,5 +45,16 @@ func (mr *MachinesRepository) GetOne(id string) (Machine, error) {
 }
 
 func (mr *MachinesRepository) UpdateOne(id string, machine Machine) (Machine, error) {
-
+	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%s WHERE id=%s RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
+	row, err = r.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer row.Close()
+	var m Machine
+	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
+		return nil, err
+	}
+	res = append(res, &m)
+	return res, nil
 }
