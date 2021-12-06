@@ -23,7 +23,7 @@ func (mc *MachinesController) ServeAllMachines(rw http.ResponseWriter, r *http.R
 		return
 	}
 	if err := json.NewEncoder(rw).Encode(res); err != nil {
-		utils.Respond(rw, 500, errors.New("internal server error"))
+		utils.Respond(rw, 500, err)
 		return
 	}
 }
