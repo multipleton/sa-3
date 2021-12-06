@@ -1,6 +1,8 @@
 package disks
 
-import "github.com/multipleton/sa-3/machines"
+import (
+	"github.com/multipleton/sa-3/machines"
+)
 
 type DisksService struct {
 	disksRepository *DisksRepository
@@ -48,6 +50,6 @@ func (ds *DisksService) updateMachineTotalDiskSpace(id uint32) error {
 	return err
 }
 
-func NewDisksService(disksRepository *DisksRepository) *DisksService {
-	return &DisksService{disksRepository: disksRepository}
+func NewDisksService(disksRepository *DisksRepository, machiesService *machines.MachinesService) *DisksService {
+	return &DisksService{disksRepository: disksRepository, machinesService: machiesService}
 }

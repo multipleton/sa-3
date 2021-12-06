@@ -26,7 +26,7 @@ func InitializeApplication(port HttpPortNumber, databaseConfiguration2 database.
 	machinesService := machines.NewMachinesService(machinesRepository)
 	machinesController := machines.NewMachinesController(machinesService)
 	disksRepository := disks.NewDisksRepository(db)
-	disksService := disks.NewDisksService(disksRepository)
+	disksService := disks.NewDisksService(disksRepository, machinesService)
 	disksController := disks.NewDisksController(disksService)
 	v := composeHTTPControllers(machinesController, disksController)
 	apiServer := &ApiServer{

@@ -1,11 +1,11 @@
 package machines
 
 type MachinesService struct {
-	mr *MachinesRepository
+	machinesRepository *MachinesRepository
 }
 
 func (ms *MachinesService) ReadAll() ([]*MachinesEntity, error) {
-	machines, err := ms.mr.GetAll()
+	machines, err := ms.machinesRepository.GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -13,7 +13,7 @@ func (ms *MachinesService) ReadAll() ([]*MachinesEntity, error) {
 }
 
 func (ms *MachinesService) FindById(id uint32) (*MachinesEntity, error) {
-	machine, err := ms.mr.GetOne(id)
+	machine, err := ms.machinesRepository.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
@@ -21,17 +21,17 @@ func (ms *MachinesService) FindById(id uint32) (*MachinesEntity, error) {
 }
 
 func (ms *MachinesService) Update(id uint32, machine *MachinesEntity) (*MachinesEntity, error) {
-	_, err := ms.mr.GetOne(id)
+	_, err := ms.machinesRepository.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
-	updatedMachine, err := ms.mr.UpdateOne(id, machine)
+	updatedMachine, err := ms.machinesRepository.UpdateOne(id, machine)
 	if err != nil {
 		return nil, err
 	}
 	return updatedMachine, nil
 }
 
-func NewMachinesService(mr *MachinesRepository) *MachinesService {
-	return &MachinesService{mr: mr}
+func NewMachinesService(machinesRepository *MachinesRepository) *MachinesService {
+	return &MachinesService{machinesRepository: machinesRepository}
 }
