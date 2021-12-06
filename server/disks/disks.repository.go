@@ -43,12 +43,6 @@ func (dr *DisksRepository) Update(entity *DisksEntity) (*DisksEntity, error) {
 	return result, err
 }
 
-func (dr *DisksRepository) Delete(id uint32) error {
-	query := "DELETE FROM disks WHERE id=$1"
-	_, err := dr.db.Exec(query, id)
-	return err
-}
-
 func NewDisksRepository(db *sql.DB) *DisksRepository {
 	return &DisksRepository{db: db}
 }

@@ -20,28 +20,34 @@ func (ds *DisksService) ConnectToMachine(id uint32, dto *DiskConnectToMachineDto
 	if err != nil {
 		return result, nil
 	}
-	dbDisk.MachineId = dto.MachineId
-	result, err = ds.disksRepository.Update(dbDisk)
+	var disk DisksEntity
+	disk.Id = dbDisk.Id
+	disk.MachineId = dto.MachineId
+	disk.Capacity = dbDisk.Capacity
+	result, err = ds.disksRepository.Update(&disk)
 	if err != nil {
 		return result, err
 	}
-	err = ds.updateMachineTotalDiskSpace(dto.MachineId)
+	if dbDisk.MachineId > 0 {
+		ds.updateMachineTotalDiskSpace(dbDisk.MachineId)
+	}
+	err = ds.updateMachineTotalDiskSpace(disk.MachineId)
 	if err != nil {
-		err = ds.disksRepository.Delete(id)
+		result, err = ds.disksRepository.Update(dbDisk)
 	}
 	return result, err
 }
 
 func (ds *DisksService) updateMachineTotalDiskSpace(id uint32) error {
 	machine, err := ds.machinesService.FindById(id)
-	if err == nil {
+	if err != nil {
 		return err
 	}
 	disks, err := ds.disksRepository.FindByMachineId(id)
-	if err == nil {
+	if err != nil {
 		return err
 	}
-	var totalDiskSpace uint64
+	var totalDiskSpace uint64 = 0
 	for _, disk := range disks {
 		totalDiskSpace += disk.Capacity
 	}
