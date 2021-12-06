@@ -30,7 +30,7 @@ func (mr *MachinesRepository) GetAll() ([]MachinesEntity, error) {
 }
 
 func (mr *MachinesRepository) GetOne(id uint32) (MachinesEntity, error) {
-	query := fmt.Sprintf("SELECT id, name, cpu_count, total_disk_space FROM machines WHERE id=%s", id)
+	query := fmt.Sprintf("SELECT id, name, cpu_count, total_disk_space FROM machines WHERE id=%d", id)
 	row, err = mr.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func (mr *MachinesRepository) GetOne(id uint32) (MachinesEntity, error) {
 }
 
 func (mr *MachinesRepository) UpdateOne(id uint32, machine MachinesEntity) (MachinesEntity, error) {
-	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%s WHERE id=%s RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
+	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%d WHERE id=%d RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
 	row, err = mr.DB.Query(query)
 	if err != nil {
 		return nil, err
