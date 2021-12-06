@@ -9,34 +9,34 @@ type MachinesRepository struct {
 	Db *sql.DB
 }
 
-func (mr *MachinesRepository) GetAll() ([]Machine, error) {
+func (mr *MachinesRepository) GetAll() ([]MachinesEntity, error) {
 	rows, err = mr.DB.Query("SELECT id, name, cpu_count, total_disk_space FROM machines")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var res []*Machine
+	var res []*MachinesEntity
 	for rows.Next() {
-		var m Machine
+		var m MachinesEntity
 		if err := rows.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
 			return nil, err
 		}
 		res = append(res, &m)
 	}
 	if res == nil {
-		res = make([]*Machine, 0)
+		res = make([]*MachinesEntity, 0)
 	}
 	return res, nil
 }
 
-func (mr *MachinesRepository) GetOne(id string) (Machine, error) {
+func (mr *MachinesRepository) GetOne(id uint32) (MachinesEntity, error) {
 	query := fmt.Sprintf("SELECT id, name, cpu_count, total_disk_space FROM machines WHERE id=%s", id)
 	row, err = mr.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer row.Close()
-	var m Machine
+	var m MachinesEntity
 	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
 		return nil, err
 	}
@@ -44,14 +44,14 @@ func (mr *MachinesRepository) GetOne(id string) (Machine, error) {
 	return res, nil
 }
 
-func (mr *MachinesRepository) UpdateOne(id string, machine Machine) (Machine, error) {
+func (mr *MachinesRepository) UpdateOne(id uint32, machine MachinesEntity) (MachinesEntity, error) {
 	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%s WHERE id=%s RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
 	row, err = mr.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer row.Close()
-	var m Machine
+	var m MachinesEntity
 	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
 		return nil, err
 	}

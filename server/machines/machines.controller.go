@@ -21,8 +21,8 @@ func handleListMachines(rw http.ResponseWriter, ms MachinesService) {
 	rw.Header().Set("content-type", "application/json")
 	res, err := ms.ReadAll()
 	if err != nil {
-		rw.WriteHeader(404)
-		_ := json.NewEncoder(rw).Encode("cannot read all machines")
+		rw.WriteHeader(500)
+		_ := json.NewEncoder(rw).Encode("internal server error")
 		return
 	}
 	rw.WriteHeader(200)

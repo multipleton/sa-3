@@ -1,31 +1,31 @@
 package machines
 
 type MachinesService struct {
-	Mr MachinesRepository
+	mr MachinesRepository
 }
 
-func (ms *MachinesService) ReadAll() ([]Machine, error) {
-	machines, err := ms.Mr.GetAll()
+func (ms *MachinesService) ReadAll() ([]MachinesEntity, error) {
+	machines, err := ms.mr.GetAll()
 	if err != nil {
 		return nil, err
 	}
 	return machines, nil
 }
 
-func (ms *MachinesService) FindById(id string) (Machine, error) {
-	machine, err := ms.Mr.GetOne(id)
+func (ms *MachinesService) FindById(id uint32) (MachinesEntity, error) {
+	machine, err := ms.mr.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
 	return machine, nil
 }
 
-func (ms *MachinesService) Update(id string, machine Machine) (Machine, error) {
-	machine, err := ms.Mr.GetOne(id)
+func (ms *MachinesService) Update(id uint32, machine MachinesEntity) (MachinesEntity, error) {
+	machine, err := ms.mr.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
-	updatedMachine, err := ms.Mr.UpdateOne(id, machine)
+	updatedMachine, err := ms.mr.UpdateOne(id, machine)
 	if err != nil {
 		return nil, err
 	}
