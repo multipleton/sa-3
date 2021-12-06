@@ -12,12 +12,12 @@ import (
 )
 
 func composeHTTPControllers(machinesController *machines.MachinesController, disksController *disks.DisksController) []utils.HTTPController {
-	return []utils.HTTPController{disksController}
+	return []utils.HTTPController{machinesController, disksController}
 }
 
 func InitializeApplication(port HttpPortNumber, databaseConfiguration database.DatabaseConfiguration) (*ApiServer, error) {
 	panic(wire.Build(
-		database.NewDatabaseConnection, // TODO: stub, replace with correct initializer
+		database.NewDatabaseConnection,
 		mux.NewRouter,
 		machines.Module,
 		disks.Module,

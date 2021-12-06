@@ -11,9 +11,18 @@ import (
 
 var httpPortNumber = flag.Int("p", 8080, "HTTP port number")
 
+var databaseConfiguration = database.DatabaseConfiguration{
+	Host:     "localhost",
+	Port:     "5432",
+	User:     "sa-3-user",
+	Password: "sa-3-password",
+	Dbname:   "sa-3",
+	Sslmode:  "disable",
+}
+
 func main() {
 	flag.Parse()
-	server, err := InitializeApplication(HttpPortNumber(*httpPortNumber), database.DatabaseConfiguration{}) // TODO: put db config
+	server, err := InitializeApplication(HttpPortNumber(*httpPortNumber), databaseConfiguration) // TODO: put db config
 	if err != nil {
 		log.Println("cannot initialize application")
 		log.Fatalln(err)

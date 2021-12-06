@@ -8,16 +8,16 @@ import (
 )
 
 type DatabaseConfiguration struct {
-	host     string
-	port     string
-	user     string
-	password string
-	dbname   string
-	sslmode  string
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Dbname   string
+	Sslmode  string
 }
 
 func NewDatabaseConnection(config DatabaseConfiguration) (*sql.DB, error) {
 	template := "host=%s port=%s user=%s password=%s dbname=%s sslmode=%s"
-	params := fmt.Sprintf(template, config.host, config.port, config.user, config.password, config.dbname, config.sslmode)
+	params := fmt.Sprintf(template, config.Host, config.Port, config.User, config.Password, config.Dbname, config.Sslmode)
 	return sql.Open("postgres", params)
 }

@@ -16,9 +16,9 @@ import (
 
 // Injectors from modules.go:
 
-func InitializeApplication(port HttpPortNumber, databaseConfiguration database.DatabaseConfiguration) (*ApiServer, error) {
+func InitializeApplication(port HttpPortNumber, databaseConfiguration2 database.DatabaseConfiguration) (*ApiServer, error) {
 	router := mux.NewRouter()
-	db, err := database.NewDatabaseConnection(databaseConfiguration)
+	db, err := database.NewDatabaseConnection(databaseConfiguration2)
 	if err != nil {
 		return nil, err
 	}
@@ -40,5 +40,5 @@ func InitializeApplication(port HttpPortNumber, databaseConfiguration database.D
 // modules.go:
 
 func composeHTTPControllers(machinesController *machines.MachinesController, disksController *disks.DisksController) []utils.HTTPController {
-	return []utils.HTTPController{disksController}
+	return []utils.HTTPController{machinesController, disksController}
 }
