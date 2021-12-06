@@ -11,10 +11,10 @@ import (
 )
 
 type DisksController struct {
-	disksService DisksService
+	disksService *DisksService
 }
 
-func (dc *DisksController) Init(router *mux.Router) {
+func (dc *DisksController) HandleRoutes(router *mux.Router) {
 	router.HandleFunc("/disks/{diskId:[0-9]+}", dc.ConnectToMachine).Methods("PATCH")
 }
 
@@ -40,4 +40,8 @@ func (dc *DisksController) ConnectToMachine(w http.ResponseWriter, r *http.Reque
 		utils.Respond(w, http.StatusInternalServerError, err)
 	}
 	utils.Respond(w, http.StatusOK, result)
+}
+
+func NewDisksController(disksService *DisksService) *DisksController {
+	return &DisksController{disksService: disksService}
 }

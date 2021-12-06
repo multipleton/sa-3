@@ -1,7 +1,7 @@
 package disks
 
 type DisksService struct {
-	disksRepository DisksRepository
+	disksRepository *DisksRepository
 }
 
 func (ds *DisksService) FindById(id uint32) (DisksEntity, error) {
@@ -18,4 +18,8 @@ func (ds *DisksService) ConnectToMachine(id uint32, dto DiskConnectToMachineDto)
 	dbDisk.MachineId = dto.MachineId
 	result, err = ds.disksRepository.Update(dbDisk)
 	return result, err
+}
+
+func NewDisksService(disksRepository *DisksRepository) *DisksService {
+	return &DisksService{disksRepository: disksRepository}
 }
