@@ -31,7 +31,7 @@ func (dc *DisksController) ConnectToMachine(w http.ResponseWriter, r *http.Reque
 		message := "invalid request body"
 		utils.Respond(w, http.StatusBadRequest, errors.New(message))
 	}
-	result, err := dc.disksService.ConnectToMachine(uint32(diskId), dto)
+	result, err := dc.disksService.ConnectToMachine(uint32(diskId), &dto)
 	if err != nil {
 		/*
 		   TODO: implement cheching for error type to return 404
