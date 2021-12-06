@@ -1,8 +1,10 @@
 package disks
 
+import "github.com/multipleton/sa-3/machines"
+
 type DisksService struct {
 	disksRepository *DisksRepository
-	machinesService *MachinesService
+	machinesService *machines.MachinesService
 }
 
 func (ds *DisksService) FindById(id uint32) (*DisksEntity, error) {
@@ -31,11 +33,11 @@ func (ds *DisksService) ConnectToMachine(id uint32, dto *DiskConnectToMachineDto
 func (ds *DisksService) updateMachineTotalDiskSpace(id uint32) error {
 	machine, err := ds.machinesService.FindById(id)
 	if err == nil {
-		return nil, err
+		return err
 	}
 	disks, err := ds.disksRepository.FindByMachineId(id)
 	if err == nil {
-		return nil, err
+		return err
 	}
 	var totalDiskSpace uint64
 	for _, disk := range disks {
