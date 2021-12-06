@@ -26,7 +26,9 @@ func handleListMachines(rw http.ResponseWriter, ms MachinesService) {
 		return
 	}
 	rw.WriteHeader(200)
-	err := json.NewEncoder(rw).Encode("123")
+	err := json.NewEncoder(rw).Encode(res)
 	if err != nil {
+		rw.WriteHeader(500)
+		_ := json.NewEncoder(rw).Encode("internal server error")
 	}
 }
