@@ -22,7 +22,7 @@ var databaseConfiguration = database.DatabaseConfiguration{
 
 func main() {
 	flag.Parse()
-	server, err := InitializeApplication(HttpPortNumber(*httpPortNumber), databaseConfiguration) // TODO: put db config
+	server, err := InitializeApplication(HttpPortNumber(*httpPortNumber), databaseConfiguration)
 	if err != nil {
 		log.Println("cannot initialize application")
 		log.Fatalln(err)

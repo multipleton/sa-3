@@ -19,11 +19,11 @@ func (mc *MachinesController) HandleRoutes(router *mux.Router) {
 func (mc *MachinesController) ServeAllMachines(rw http.ResponseWriter, r *http.Request) {
 	res, err := mc.ms.ReadAll()
 	if err != nil {
-		utils.Respond(rw, 500, err)
+		utils.Respond(rw, http.StatusInternalServerError, err)
 		return
 	}
 	if err := json.NewEncoder(rw).Encode(res); err != nil {
-		utils.Respond(rw, 500, err)
+		utils.Respond(rw, http.StatusInternalServerError, err)
 		return
 	}
 }
