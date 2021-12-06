@@ -22,16 +22,16 @@ func (ds *DisksService) ConnectToMachine(id uint32, dto *DiskConnectToMachineDto
 	}
 	var disk DisksEntity
 	disk.Id = dbDisk.Id
-	disk.MachineId = dto.MachineId
+	disk.MachineId = &dto.MachineId
 	disk.Capacity = dbDisk.Capacity
 	result, err = ds.disksRepository.Update(&disk)
 	if err != nil {
 		return result, err
 	}
-	if dbDisk.MachineId > 0 {
-		ds.updateMachineTotalDiskSpace(dbDisk.MachineId)
+	if dbDisk.MachineId != nil {
+		ds.updateMachineTotalDiskSpace(*dbDisk.MachineId)
 	}
-	err = ds.updateMachineTotalDiskSpace(disk.MachineId)
+	err = ds.updateMachineTotalDiskSpace(*disk.MachineId)
 	if err != nil {
 		result, err = ds.disksRepository.Update(dbDisk)
 	}
