@@ -13,7 +13,7 @@ type MachinesController struct {
 }
 
 func (mc *MachinesController) HandleRoutes(router *mux.Router) {
-	router.HandleFunc("/machines/", mc.ServeAllMachines).Methods("GET")
+	router.HandleFunc("/machines", mc.ServeAllMachines).Methods("GET")
 }
 
 func (mc *MachinesController) ServeAllMachines(rw http.ResponseWriter, r *http.Request) {
