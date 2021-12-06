@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/multipleton/sa-3/database"
 	"github.com/multipleton/sa-3/disks"
+	"github.com/multipleton/sa-3/machines"
 	"github.com/multipleton/sa-3/utils"
 )
 
@@ -21,10 +22,13 @@ func InitializeApplication(port HttpPortNumber, databaseConfiguration database.D
 	if err != nil {
 		return nil, err
 	}
+	machinesRepository := machines.NewMachinesRepository(db)
+	machinesService := machines.NewMachinesService(machinesRepository)
+	machinesController := machines.NewMachinesController(machinesService)
 	disksRepository := disks.NewDisksRepository(db)
 	disksService := disks.NewDisksService(disksRepository)
 	disksController := disks.NewDisksController(disksService)
-	v := composeHTTPControllers(disksController)
+	v := composeHTTPControllers(machinesController, disksController)
 	apiServer := &ApiServer{
 		port:        port,
 		router:      router,
@@ -35,6 +39,6 @@ func InitializeApplication(port HttpPortNumber, databaseConfiguration database.D
 
 // modules.go:
 
-func composeHTTPControllers(disksController *disks.DisksController) []utils.HTTPController {
+func composeHTTPControllers(machinesController *machines.MachinesController, disksController *disks.DisksController) []utils.HTTPController {
 	return []utils.HTTPController{disksController}
 }
