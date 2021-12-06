@@ -2,10 +2,10 @@ package machines
 
 import (
 	"encoding/json"
-	"errors"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/multipleton/sa-3/utils"
-	"net/http"
 )
 
 type MachinesController struct {

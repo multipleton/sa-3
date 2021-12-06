@@ -20,7 +20,7 @@ func (ms *MachinesService) FindById(id uint32) (*MachinesEntity, error) {
 	return machine, nil
 }
 
-func (ms *MachinesService) Update(id uint32, machine MachinesEntity) (*MachinesEntity, error) {
+func (ms *MachinesService) Update(id uint32, machine *MachinesEntity) (*MachinesEntity, error) {
 	_, err := ms.mr.GetOne(id)
 	if err != nil {
 		return nil, err
