@@ -10,7 +10,7 @@ type MachinesRepository struct {
 }
 
 func (mr *MachinesRepository) GetAll() ([]Machine, error) {
-	rows, err = r.DB.Query("SELECT id, name, cpu_count, total_disk_space FROM machines")
+	rows, err = mr.DB.Query("SELECT id, name, cpu_count, total_disk_space FROM machines")
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (mr *MachinesRepository) GetAll() ([]Machine, error) {
 
 func (mr *MachinesRepository) GetOne(id string) (Machine, error) {
 	query := fmt.Sprintf("SELECT id, name, cpu_count, total_disk_space FROM machines WHERE id=%s", id)
-	row, err = r.DB.Query(query)
+	row, err = mr.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (mr *MachinesRepository) GetOne(id string) (Machine, error) {
 
 func (mr *MachinesRepository) UpdateOne(id string, machine Machine) (Machine, error) {
 	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%s WHERE id=%s RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
-	row, err = r.DB.Query(query)
+	row, err = mr.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
