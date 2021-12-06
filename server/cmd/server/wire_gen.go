@@ -7,17 +7,20 @@
 package main
 
 import (
-	"database/sql"
 	"github.com/gorilla/mux"
+	"github.com/multipleton/sa-3/database"
 	"github.com/multipleton/sa-3/disks"
 	"github.com/multipleton/sa-3/utils"
 )
 
 // Injectors from modules.go:
 
-func InitializeApplication(port HttpPortNumber) (*ApiServer, error) {
+func InitializeApplication(port HttpPortNumber, databaseConfiguration database.DatabaseConfiguration) (*ApiServer, error) {
 	router := mux.NewRouter()
-	db := &sql.DB{}
+	db, err := database.NewDatabaseConnection(databaseConfiguration)
+	if err != nil {
+		return nil, err
+	}
 	disksRepository := disks.NewDisksRepository(db)
 	disksService := disks.NewDisksService(disksRepository)
 	disksController := disks.NewDisksController(disksService)
