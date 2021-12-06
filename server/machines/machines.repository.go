@@ -6,11 +6,11 @@ import (
 )
 
 type MachinesRepository struct {
-	Db *sql.DB
+	db *sql.DB
 }
 
-func (mr *MachinesRepository) GetAll() ([]MachinesEntity, error) {
-	rows, err = mr.DB.Query("SELECT id, name, cpu_count, total_disk_space FROM machines")
+func (mr *MachinesRepository) GetAll() ([]*MachinesEntity, error) {
+	rows, err := mr.db.Query("SELECT id, name, cpu_count, total_disk_space FROM machines")
 	if err != nil {
 		return nil, err
 	}
@@ -29,9 +29,9 @@ func (mr *MachinesRepository) GetAll() ([]MachinesEntity, error) {
 	return res, nil
 }
 
-func (mr *MachinesRepository) GetOne(id uint32) (MachinesEntity, error) {
+func (mr *MachinesRepository) GetOne(id uint32) (*MachinesEntity, error) {
 	query := fmt.Sprintf("SELECT id, name, cpu_count, total_disk_space FROM machines WHERE id=%d", id)
-	row, err = mr.DB.Query(query)
+	row, err := mr.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -40,13 +40,12 @@ func (mr *MachinesRepository) GetOne(id uint32) (MachinesEntity, error) {
 	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
 		return nil, err
 	}
-	res = append(res, &m)
-	return res, nil
+	return &m, nil
 }
 
-func (mr *MachinesRepository) UpdateOne(id uint32, machine MachinesEntity) (MachinesEntity, error) {
+func (mr *MachinesRepository) UpdateOne(id uint32, machine MachinesEntity) (*MachinesEntity, error) {
 	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%d WHERE id=%d RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
-	row, err = mr.DB.Query(query)
+	row, err := mr.db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +54,7 @@ func (mr *MachinesRepository) UpdateOne(id uint32, machine MachinesEntity) (Mach
 	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
 		return nil, err
 	}
-	res = append(res, &m)
-	return res, nil
+	return &m, nil
 }
 
 func NewMachinesRepository(db *sql.DB) *MachinesRepository {

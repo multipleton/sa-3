@@ -17,7 +17,7 @@ func (mc *MachinesController) HandleRoutes(router *mux.Router) {
 }
 
 func (mc *MachinesController) ServeAllMachines(rw http.ResponseWriter, r *http.Request) {
-	res, err := ms.ReadAll()
+	res, err := mc.ms.ReadAll()
 	if err != nil {
 		utils.Respond(rw, 500, errors.New("internal server error"))
 		return

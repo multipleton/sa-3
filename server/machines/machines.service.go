@@ -1,10 +1,10 @@
 package machines
 
 type MachinesService struct {
-	mr MachinesRepository
+	mr *MachinesRepository
 }
 
-func (ms *MachinesService) ReadAll() ([]MachinesEntity, error) {
+func (ms *MachinesService) ReadAll() ([]*MachinesEntity, error) {
 	machines, err := ms.mr.GetAll()
 	if err != nil {
 		return nil, err
@@ -12,7 +12,7 @@ func (ms *MachinesService) ReadAll() ([]MachinesEntity, error) {
 	return machines, nil
 }
 
-func (ms *MachinesService) FindById(id uint32) (MachinesEntity, error) {
+func (ms *MachinesService) FindById(id uint32) (*MachinesEntity, error) {
 	machine, err := ms.mr.GetOne(id)
 	if err != nil {
 		return nil, err
@@ -20,8 +20,8 @@ func (ms *MachinesService) FindById(id uint32) (MachinesEntity, error) {
 	return machine, nil
 }
 
-func (ms *MachinesService) Update(id uint32, machine MachinesEntity) (MachinesEntity, error) {
-	machine, err := ms.mr.GetOne(id)
+func (ms *MachinesService) Update(id uint32, machine MachinesEntity) (*MachinesEntity, error) {
+	_, err := ms.mr.GetOne(id)
 	if err != nil {
 		return nil, err
 	}
