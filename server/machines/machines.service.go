@@ -31,3 +31,7 @@ func (ms *MachinesService) Update(id uint32, machine MachinesEntity) (MachinesEn
 	}
 	return updatedMachine, nil
 }
+
+func NewMachinesService(mr *MachinesRepository) *MachinesService {
+	return &MachinesService{mr: mr}
+}

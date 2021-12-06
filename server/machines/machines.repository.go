@@ -58,3 +58,7 @@ func (mr *MachinesRepository) UpdateOne(id uint32, machine MachinesEntity) (Mach
 	res = append(res, &m)
 	return res, nil
 }
+
+func NewMachinesRepository(db *sql.DB) *MachinesRepository {
+	return &MachinesRepository{db: db}
+}

@@ -2,33 +2,32 @@ package machines
 
 import (
 	"encoding/json"
+	"errors"
+	"github.com/gorilla/mux"
+	"github.com/multipleton/sa-3/utils"
 	"net/http"
 )
 
-type HttpHandlerFunc http.HandlerFunc
+type MachinesController struct {
+	ms *MachinesService
+}
 
-func HttpHandler(ms *MachinesService) HttpHandlerFunc {
-	return func(rw http.ResponseWriter, r *http.Request) {
-		if r.Method == "GET" {
-			handleListMachines(rw, ms)
-		} else {
-			rw.WriteHeader(http.StatusMethodNotAllowed)
-		}
+func (mc *MachinesController) HandleRoutes(router *mux.Router) {
+	router.HandleFunc("/machines/", mc.ServeAllMachines).Methods("GET")
+}
+
+func (mc *MachinesController) ServeAllMachines(rw http.ResponseWriter, r *http.Request) {
+	res, err := ms.ReadAll()
+	if err != nil {
+		utils.Respond(rw, 500, errors.New("internal server error"))
+		return
+	}
+	if err := json.NewEncoder(rw).Encode(res); err != nil {
+		utils.Respond(rw, 500, errors.New("internal server error"))
+		return
 	}
 }
 
-func handleListMachines(rw http.ResponseWriter, ms MachinesService) {
-	rw.Header().Set("content-type", "application/json")
-	res, err := ms.ReadAll()
-	if err != nil {
-		rw.WriteHeader(500)
-		_ := json.NewEncoder(rw).Encode("internal server error")
-		return
-	}
-	rw.WriteHeader(200)
-	err := json.NewEncoder(rw).Encode(res)
-	if err != nil {
-		rw.WriteHeader(500)
-		_ := json.NewEncoder(rw).Encode("internal server error")
-	}
+func NewMachinesController(ms *MachinesService) *MachinesController {
+	return &MachinesController{ms: ms}
 }
