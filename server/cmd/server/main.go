@@ -27,7 +27,7 @@ func main() {
 		log.Println("cannot initialize application")
 		log.Fatalln(err)
 	}
-	server.Start()
+	go server.Start()
 	sigChannel := make(chan os.Signal, 1)
 	signal.Notify(sigChannel, os.Interrupt)
 	<-sigChannel
