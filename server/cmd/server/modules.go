@@ -1,5 +1,27 @@
+//go:build wireinject
+
 package main
 
-/*import (
+import (
 	"github.com/google/wire"
-)*/
+	"github.com/gorilla/mux"
+	"github.com/multipleton/sa-3/database"
+	"github.com/multipleton/sa-3/disks"
+	"github.com/multipleton/sa-3/machines"
+	"github.com/multipleton/sa-3/utils"
+)
+
+func composeHTTPControllers(machinesController *machines.MachinesController, disksController *disks.DisksController) []utils.HTTPController {
+	return []utils.HTTPController{machinesController, disksController}
+}
+
+func InitializeApplication(port HttpPortNumber, databaseConfiguration database.DatabaseConfiguration) (*ApiServer, error) {
+	panic(wire.Build(
+		database.NewDatabaseConnection,
+		mux.NewRouter,
+		machines.Module,
+		disks.Module,
+		composeHTTPControllers,
+		wire.Struct(new(ApiServer), "port", "router", "controllers"),
+	))
+}

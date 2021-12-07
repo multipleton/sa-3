@@ -2,7 +2,6 @@ package machines
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 type MachinesRepository struct {
@@ -30,31 +29,20 @@ func (mr *MachinesRepository) GetAll() ([]*MachinesEntity, error) {
 }
 
 func (mr *MachinesRepository) GetOne(id uint32) (*MachinesEntity, error) {
-	query := fmt.Sprintf("SELECT id, name, cpu_count, total_disk_space FROM machines WHERE id=%d", id)
-	row, err := mr.db.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	defer row.Close()
-	var m MachinesEntity
-	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
-		return nil, err
-	}
-	return &m, nil
+	var result MachinesEntity
+	row := mr.db.QueryRow("SELECT * FROM machines WHERE id=$1", id)
+	err := row.Scan(&result.Id, &result.Name, &result.CpuCount, &result.TotalDiskSpace)
+	return &result, err
 }
 
 func (mr *MachinesRepository) UpdateOne(id uint32, machine *MachinesEntity) (*MachinesEntity, error) {
-	query := fmt.Sprintf("UPDATE machines SET total_disk_space=%d WHERE id=%d RETURNING id, name, cpu_count, total_disk_space", machine.TotalDiskSpace, id)
-	row, err := mr.db.Query(query)
-	if err != nil {
-		return nil, err
+	var result *MachinesEntity
+	query := "UPDATE machines SET name=$1, cpu_count=$2, total_disk_space=$3 WHERE id=$4"
+	_, err := mr.db.Exec(query, machine.Name, machine.CpuCount, machine.TotalDiskSpace, id)
+	if err == nil {
+		result, err = mr.GetOne(id)
 	}
-	defer row.Close()
-	var m MachinesEntity
-	if err := row.Scan(&m.Id, &m.Name, &m.CpuCount, &m.TotalDiskSpace); err != nil {
-		return nil, err
-	}
-	return &m, nil
+	return result, err
 }
 
 func NewMachinesRepository(db *sql.DB) *MachinesRepository {

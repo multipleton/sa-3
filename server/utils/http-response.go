@@ -7,7 +7,7 @@ import (
 )
 
 func Respond(w http.ResponseWriter, status int, result interface{}) {
-	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	err := json.NewEncoder(w).Encode(result)
 	if err != nil {
