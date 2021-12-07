@@ -1,7 +1,6 @@
 package machines
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -17,15 +16,12 @@ func (mc *MachinesController) HandleRoutes(router *mux.Router) {
 }
 
 func (mc *MachinesController) ServeAllMachines(rw http.ResponseWriter, r *http.Request) {
-	res, err := mc.ms.ReadAll()
+	result, err := mc.ms.ReadAll()
 	if err != nil {
 		utils.Respond(rw, http.StatusInternalServerError, err)
 		return
 	}
-	if err := json.NewEncoder(rw).Encode(res); err != nil {
-		utils.Respond(rw, http.StatusInternalServerError, err)
-		return
-	}
+	utils.Respond(rw, http.StatusOK, result)
 }
 
 func NewMachinesController(ms *MachinesService) *MachinesController {
