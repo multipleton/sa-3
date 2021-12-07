@@ -17,7 +17,7 @@ var databaseConfiguration = database.DatabaseConfiguration{
 	User:     "sa-3-user",
 	Password: "sa-3-password",
 	Dbname:   "sa-3",
-	Sslmode:  "disable",
+	SSLMode:  "disable",
 }
 
 func main() {

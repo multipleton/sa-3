@@ -13,11 +13,11 @@ type DatabaseConfiguration struct {
 	User     string
 	Password string
 	Dbname   string
-	Sslmode  string
+	SSLMode  string
 }
 
 func NewDatabaseConnection(config DatabaseConfiguration) (*sql.DB, error) {
 	template := "host=%s port=%s user=%s password=%s dbname=%s sslmode=%s"
-	params := fmt.Sprintf(template, config.Host, config.Port, config.User, config.Password, config.Dbname, config.Sslmode)
+	params := fmt.Sprintf(template, config.Host, config.Port, config.User, config.Password, config.Dbname, config.SSLMode)
 	return sql.Open("postgres", params)
 }
