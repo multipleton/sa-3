@@ -14,7 +14,7 @@ describe('Machines module', () => {
 		assert.strictEqual(Array.isArray(machines), true);
 	});
 
-	it('should return array with non-zero length', async function() {
+	it('should return array with non-zero length', async () => {
 		const machines = await getAllMachines();
 		assert.strictEqual(machines.length > 0, true);
    });
