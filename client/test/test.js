@@ -8,7 +8,7 @@ const assert = require('chai').assert;
 const { getAllMachines } = require('../machines');
 const { connectDiskToMachine } = require('../disks');
 
-describe('Machines module', function() {
+describe('Machines module', () => {
 	it('should return array', async () => {
 		const machines = await getAllMachines();
 		assert.strictEqual(Array.isArray(machines), true);
